@@ -1,10 +1,9 @@
-import argparse
-from services import LibraryService
-from storage import Storage
+from argparse import ArgumentParser
+from src.services import LibraryService
 
 
-def setup_parser():
-    parser = argparse.ArgumentParser(description="Система управления библиотекой")
+def setup_parser() -> ArgumentParser:
+    parser = ArgumentParser(description="Система управления библиотекой")
     subparsers = parser.add_subparsers(dest="command", help="Доступные команды")
 
     add_parser = subparsers.add_parser("add", help="Добавить книгу")

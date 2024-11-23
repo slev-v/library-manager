@@ -1,9 +1,9 @@
-from services import LibraryService
-from storage import Storage
-from cli import execute_command, setup_parser
+from src.services import LibraryService
+from src.storage import Storage
+from src.cli import execute_command, setup_parser
 
 
-def main():
+def main() -> None:
     storage = Storage("data/books.json")
     library_service = LibraryService(storage)
 

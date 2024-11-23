@@ -1,5 +1,5 @@
-from storage import Storage
-from models import Book, BookStatus
+from src.storage import Storage
+from src.models import Book, BookStatus
 
 
 class LibraryService:
