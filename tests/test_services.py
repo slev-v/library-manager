@@ -104,7 +104,7 @@ class TestLibraryService(TestCase):
         self.assertEqual(book.status, BookStatus.ISSUED)
         self.mock_storage.save_books.assert_called_once()
 
-    def test_update_book_status_invalid_id(self):
+    def test_update_book_status_invalid_id(self) -> None:
         self.mock_storage.load_books.return_value = []
 
         with self.assertRaises(ValueError) as context:
@@ -114,7 +114,7 @@ class TestLibraryService(TestCase):
 
         self.mock_storage.save_books.assert_not_called()
 
-    def test_update_book_status_invalid_status(self):
+    def test_update_book_status_invalid_status(self) -> None:
         book = Book(title="Test Book", author="Author", year=1999)
         self.mock_storage.load_books.return_value = [book]
 
