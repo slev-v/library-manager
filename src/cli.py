@@ -30,7 +30,7 @@ def setup_parser() -> ArgumentParser:
     return parser
 
 
-def execute_command(args, library_service: LibraryService):
+def execute_command(args, library_service: LibraryService) -> None:
     try:
         if args.command == "add":
             library_service.add_book(args.title, args.author, args.year)
