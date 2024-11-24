@@ -68,6 +68,8 @@ def execute_command(args, library_service: LibraryService) -> None:
             print("Неизвестная команда.")
     except ValueError as e:
         print(f"Ошибка: {e}")
+    except RuntimeError as e:
+        print(f"Системная ошибка: {e}")
 
 
 def print_books_table(books):
