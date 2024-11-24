@@ -4,6 +4,9 @@ from enum import Enum
 
 
 class BookStatus(Enum):
+    """
+    Статус книги.
+    """
     AVAILABLE = "в наличии"
     ISSUED = "выдана"
 
@@ -12,6 +15,9 @@ class BookStatus(Enum):
 
     @staticmethod
     def from_str(value: str) -> "BookStatus":
+        """
+        Преобразует строку в объект BookStatus.
+        """
         for status in BookStatus:
             if status.value == value:
                 return status
@@ -20,6 +26,9 @@ class BookStatus(Enum):
 
 @dataclass
 class Book:
+    """
+    Класс для представления книги.
+    """
     title: str
     author: str
     year: int
@@ -27,6 +36,9 @@ class Book:
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
 
     def to_dict(self) -> dict:
+        """
+        Преобразует объект книги в словарь.
+        """
         return {
             "id": self.id,
             "title": self.title,
@@ -37,6 +49,9 @@ class Book:
 
     @staticmethod
     def from_dict(data: dict) -> "Book":
+        """
+        Создает объект книги из словаря.
+        """
         return Book(
             id=data["id"],
             title=data["title"],

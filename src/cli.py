@@ -3,24 +3,32 @@ from src.services import LibraryService
 
 
 def setup_parser() -> ArgumentParser:
+    """
+    Создает и настраивает парсер аргументов командной строки
+    """
     parser = ArgumentParser(description="Система управления библиотекой")
     subparsers = parser.add_subparsers(dest="command", help="Доступные команды")
 
+    # Парсер для добавления книги
     add_parser = subparsers.add_parser("add", help="Добавить книгу")
     add_parser.add_argument("--title", required=True, help="Название книги")
     add_parser.add_argument("--author", required=True, help="Автор книги")
     add_parser.add_argument("--year", required=True, type=int, help="Год издания")
 
+    # Парсер для удаления книги
     remove_parser = subparsers.add_parser("remove", help="Удалить книгу")
     remove_parser.add_argument("--id", required=True, help="ID книги для удаления")
 
+    # Парсер для поиска книг
     search_parser = subparsers.add_parser("search", help="Найти книги")
     search_parser.add_argument("--title", help="Название книги")
     search_parser.add_argument("--author", help="Автор книги")
     search_parser.add_argument("--year", type=int, help="Год издания")
 
+    # Парсер для отображения всех книг
     subparsers.add_parser("list", help="Отобразить все книги")
 
+    # Парсер для обновления статуса книги
     update_parser = subparsers.add_parser("update", help="Обновить статус книги")
     update_parser.add_argument("--id", required=True, help="ID книги")
     update_parser.add_argument(
@@ -31,6 +39,9 @@ def setup_parser() -> ArgumentParser:
 
 
 def execute_command(args, library_service: LibraryService) -> None:
+    """
+    Выполняет команду, переданную через аргументы командной строки
+    """
     try:
         if args.command == "add":
             library_service.add_book(args.title, args.author, args.year)
