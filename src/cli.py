@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+from textwrap import shorten
 from src.services import LibraryService
 
 
@@ -53,19 +54,11 @@ def execute_command(args, library_service: LibraryService) -> None:
 
         elif args.command == "search":
             books = library_service.search_books(args.title, args.author, args.year)
-            if books:
-                for book in books:
-                    print(book)
-            else:
-                print("Книги не найдены.")
+            print_books_table(books)
 
         elif args.command == "list":
             books = library_service.get_all_books()
-            if books:
-                for book in books:
-                    print(book)
-            else:
-                print("В библиотеке нет книг.")
+            print_books_table(books)
 
         elif args.command == "update":
             library_service.update_book_status(args.id, args.status)
@@ -75,3 +68,33 @@ def execute_command(args, library_service: LibraryService) -> None:
             print("Неизвестная команда.")
     except ValueError as e:
         print(f"Ошибка: {e}")
+
+
+def print_books_table(books):
+    """
+    Форматированный вывод списка книг в виде таблицы.
+    """
+    if not books:
+        print("Нет книг для отображения.")
+        return
+
+    # Ширина столбцов
+    col_widths = {"ID": 36, "Название": 30, "Автор": 20, "Год": 6, "Статус": 10}
+
+    # Заголовок
+    header = f"| {'ID'.ljust(col_widths['ID'])} | {'Название'.ljust(col_widths['Название'])} | {'Автор'.ljust(col_widths['Автор'])} | {'Год'.ljust(col_widths['Год'])} | {'Статус'.ljust(col_widths['Статус'])} |"
+    print("-" * len(header))
+    print(header)
+    print("-" * len(header))
+
+    # Вывод книг
+    for book in books:
+        print(
+            f"| {book.id.ljust(col_widths['ID'])} "
+            f"| {shorten(book.title, width=col_widths['Название'] - 1, placeholder='…').ljust(col_widths['Название'])} "
+            f"| {shorten(book.author, width=col_widths['Автор'] - 1, placeholder='…').ljust(col_widths['Автор'])} "
+            f"| {str(book.year).ljust(col_widths['Год'])} "
+            f"| {str(book.status).ljust(col_widths['Статус'])} |"
+        )
+
+    print("-" * len(header))
