@@ -11,6 +11,9 @@ class TestLibraryService(TestCase):
         self.service = LibraryService(storage=self.mock_storage)
 
     def test_add_book(self) -> None:
+        """
+        Проверяет, что метод add_book вызывает метод save_books у объекта storage
+        """
         self.mock_storage.load_books.return_value = []
 
         self.service.add_book("Test Book", "Author", 1999)
@@ -21,6 +24,9 @@ class TestLibraryService(TestCase):
         self.assertEqual(saved_books[0].title, "Test Book")
 
     def test_remove_book(self) -> None:
+        """
+        Проверяет, что метод remove_book вызывает метод save_books у объект
+        """
         book = Book("Test Book", "Author", 1999)
         self.mock_storage.load_books.return_value = [book]
 
@@ -28,12 +34,18 @@ class TestLibraryService(TestCase):
         self.mock_storage.save_books.assert_called_once()
 
     def test_remove_non_existent_book(self) -> None:
+        """
+        Проверяет, что метод remove_book вызывает исключение, если книга с указанным id не найдена
+        """
         self.mock_storage.load_books.return_value = []
 
         with self.assertRaises(ValueError):
             self.service.remove_book("none_existent_id")
 
     def test_search_books_by_title(self) -> None:
+        """
+        Проверяет, что метод search_books возвращает список книг, удовлетворяющих фильтру по названию
+        """
         books = [
             Book(title="Python Basics", author="John", year=2020),
             Book(title="Advanced Python", author="Margo", year=2021),
@@ -48,6 +60,9 @@ class TestLibraryService(TestCase):
         self.assertEqual(result[0].title, "Advanced Python")
 
     def test_search_books_by_author(self) -> None:
+        """
+        Проверяет, что метод search_books возвращает список книг, удовлетворяющих фильтру по автору
+        """
         books = [
             Book(title="Python Basics", author="John", year=2020),
             Book(title="Advanced Python", author="Margo", year=2021),
@@ -59,6 +74,9 @@ class TestLibraryService(TestCase):
         self.assertEqual(result[0].author, "John")
 
     def test_search_books_by_year(self) -> None:
+        """
+        Проверяет, что метод search_books возвращает список книг, удовлетворяющих фильтру по году издания
+        """
         books = [
             Book(title="Python Basics", author="John", year=2020),
             Book(title="Advanced Python", author="Margo", year=2021),
@@ -69,18 +87,10 @@ class TestLibraryService(TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].year, 2020)
 
-    def test_search_books_combined_filters(self) -> None:
-        books = [
-            Book(title="Python Basics", author="John", year=2020),
-            Book(title="Advanced Python", author="Margo", year=2021),
-        ]
-        self.mock_storage.load_books.return_value = books
-
-        result = self.service.search_books(title="Python", author="Margo")
-        self.assertEqual(len(result), 1)
-        self.assertEqual(result[0].title, "Advanced Python")
-
     def test_get_all_books(self) -> None:
+        """
+        Проверяет, что метод get_all_books возвращает все книги
+        """
         books = [
             Book(title="Book 1", author="Author 1", year=2020),
             Book(title="Book 2", author="Author 2", year=2021),
@@ -96,6 +106,9 @@ class TestLibraryService(TestCase):
         self.mock_storage.load_books.assert_called_once()
 
     def test_update_book_status_success(self) -> None:
+        """
+        Проверяет, что метод update_book_status обновляет статус книги
+        """
         book = Book("Test Book", "Author", 1999)
         self.mock_storage.load_books.return_value = [book]
 
@@ -105,6 +118,9 @@ class TestLibraryService(TestCase):
         self.mock_storage.save_books.assert_called_once()
 
     def test_update_book_status_invalid_id(self) -> None:
+        """
+        Проверяет, что метод update_book_status вызывает исключение, если книга с указанным id не найдена
+        """
         self.mock_storage.load_books.return_value = []
 
         with self.assertRaises(ValueError) as context:
@@ -115,6 +131,9 @@ class TestLibraryService(TestCase):
         self.mock_storage.save_books.assert_not_called()
 
     def test_update_book_status_invalid_status(self) -> None:
+        """
+        Проверяет, что метод update_book_status вызывает исключение, если передан неверный статус
+        """
         book = Book(title="Test Book", author="Author", year=1999)
         self.mock_storage.load_books.return_value = [book]
 

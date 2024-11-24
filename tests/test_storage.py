@@ -14,6 +14,9 @@ class TestStorage(TestCase):
         self.temp_file.close()
 
     def test_save_and_load_books(self):
+        """
+        Проверяет, что методы save_books и load_books работают корректно
+        """
         books = [Book(title="Test Book", author="Author", year=1999)]
         self.storage.save_books(books)
         loaded_books = self.storage.load_books()
