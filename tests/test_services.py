@@ -87,6 +87,16 @@ class TestLibraryService(TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0].year, 2020)
 
+    def test_search_books_combined_filters(self) -> None:
+        books = [
+            Book(title="Python Basics", author="John", year=2020),
+            Book(title="Advanced Python", author="Margo", year=2021),
+        ]
+        self.mock_storage.load_books.return_value = books
+        result = self.service.search_books(title="Python", year=2020)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0].title, "Python Basics")
+
     def test_get_all_books(self) -> None:
         """
         Проверяет, что метод get_all_books возвращает все книги

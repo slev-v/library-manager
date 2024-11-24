@@ -6,6 +6,7 @@ class LibraryService:
     """
     Класс, предоставляющий методы для работы с библиотекой
     """
+
     def __init__(self, storage: Storage) -> None:
         self.storage = storage
 
@@ -37,21 +38,23 @@ class LibraryService:
         year: int | None = None,
     ) -> list[Book]:
         """
-        Возвращает список книг, отфильтрованных по названию, автору или году издания
+        Возвращает список книг, отфильтрованных по названию, автору и/или году издания
         """
         books = self.storage.load_books()
-        results = books
 
-        if title:
-            results = [book for book in results if title.lower() in book.title.lower()]
-        if author:
-            results = [
-                book for book in results if author.lower() in book.author.lower()
-            ]
-        if year:
-            results = [book for book in results if year == book.year]
+        def matches(book: Book) -> bool:
+            """
+            Проверяет, соответствует ли книга всем переданным критериям.
+            """
+            return all(
+                [
+                    title.lower() in book.title.lower() if title else True,
+                    author.lower() in book.author.lower() if author else True,
+                    year == book.year if year else True,
+                ]
+            )
 
-        return results
+        return list(filter(matches, books))
 
     def get_all_books(self) -> list[Book]:
         """
